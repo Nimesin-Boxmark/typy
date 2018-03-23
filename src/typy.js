@@ -110,6 +110,21 @@ class Typy {
     if (this.isString) return this.input;
     return '';
   }
+
+  get safeNumber() {
+    if (this.isNumber) return this.input;
+    return 0;
+  }
+
+  get safeBoolean() {
+    if (this.isBoolean) return this.input;
+    return false;
+  }
+
+  get safeFunction() {
+    if (this.isFunction) return this.input;
+    return /* istanbul ignore next */ () => {};
+  }
 }
 
 export default Typy;

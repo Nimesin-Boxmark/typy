@@ -68,6 +68,12 @@ describe('Typy', () => {
         goodKey: 'hooray'
       };
       assert(t(obj.badKey).isNullOrUndefined === true, 'NullOrUndefined check didn\'t work :(');
+
+      assert(t('hello').isNullOrUndefined === false, 'NullOrUndefined check didn\'t work :(');
+      assert(t(false).isNullOrUndefined === false, 'NullOrUndefined check didn\'t work :(');
+      assert(t(22).isNullOrUndefined === false, 'NullOrUndefined check didn\'t work :(');
+      assert(t([]).isNullOrUndefined === false, 'NullOrUndefined check didn\'t work :(');
+      assert(t({}).isNullOrUndefined === false, 'NullOrUndefined check didn\'t work :(');
     });
   });
 
@@ -101,6 +107,11 @@ describe('Typy', () => {
     it('should test if object is empty', () => {
       const obj = {};
       assert(t(obj).isEmptyObject === true, 'Empty Object check didn\'t work :(');
+
+      assert(t('hello').isEmptyObject === false, 'Empty Object check didn\'t work :(');
+      assert(t(false).isEmptyObject === false, 'Empty Object check didn\'t work :(');
+      assert(t(22).isEmptyObject === false, 'Empty Object check didn\'t work :(');
+      assert(t([]).isEmptyObject === false, 'Empty Object check didn\'t work :(');
     });
 
     it('should test if type is string', () => {
@@ -111,6 +122,12 @@ describe('Typy', () => {
     it('should test if string is empty string', () => {
       const obj = '';
       assert(t(obj).isEmptyString === true, 'EmptyString check didn\'t work :(');
+
+      assert(t('hello').isEmptyString === false, 'EmptyString check didn\'t work :(');
+      assert(t(false).isEmptyString === false, 'EmptyString check didn\'t work :(');
+      assert(t(22).isEmptyString === false, 'EmptyString check didn\'t work :(');
+      assert(t([]).isEmptyString === false, 'EmptyString check didn\'t work :(');
+      assert(t({}).isEmptyString === false, 'FEmptyStringalse check didn\'t work :(');
     });
 
     it('should test if type is Number', () => {
@@ -136,11 +153,23 @@ describe('Typy', () => {
     it('should test if object is true', () => {
       const obj = true;
       assert(t(obj).isTrue === true, 'True check didn\'t work :(');
+
+      assert(t('hello').isTrue === false, 'True check didn\'t work :(');
+      assert(t(false).isNullOrUndefined === false, 'NullOrUndefined check didn\'t work :(');
+      assert(t(22).isTrue === false, 'True check didn\'t work :(');
+      assert(t([]).isTrue === false, 'True check didn\'t work :(');
+      assert(t({}).isTrue === false, 'True check didn\'t work :(');
     });
 
     it('should test if object is false', () => {
       const obj = false;
-      assert(t(obj).isFalse === true, 'True check didn\'t work :(');
+      assert(t(obj).isFalse === true, 'False check didn\'t work :(');
+
+      assert(t('hello').isFalse === false, 'False check didn\'t work :(');
+      assert(t(true).isFalse === false, 'False check didn\'t work :(');
+      assert(t(22).isFalse === false, 'False check didn\'t work :(');
+      assert(t([]).isFalse === false, 'False check didn\'t work :(');
+      assert(t({}).isFalse === false, 'False check didn\'t work :(');
     });
 
     it('should test if type is Array', () => {
@@ -152,6 +181,11 @@ describe('Typy', () => {
     it('should test if Array is Empty Array', () => {
       const obj = [];
       assert(t(obj).isEmptyArray === true, 'Empty Array check didn\'t work :(');
+
+      assert(t('').isEmptyArray === false, 'Empty Array check didn\'t work :(');
+      assert(t(false).isEmptyArray === false, 'Empty Array check didn\'t work :(');
+      assert(t(22).isEmptyArray === false, 'Empty Array check didn\'t work :(');
+      assert(t({}).isEmptyArray === false, 'Empty Array check didn\'t work :(');
     });
 
     it('should test if type is Function', () => {
@@ -202,6 +236,69 @@ describe('Typy', () => {
       obj = [];
       assert(t(obj).safeString === '', 'Safe String check didn\'t work :(');
       assert(t(obj.badKey).safeString === '', 'Safe String check didn\'t work :(');
+    });
+  });
+
+  describe('Safe Number', () => {
+    it('should return the number if type is number', () => {
+      const num = 22;
+      assert(t(num).safeNumber === num, 'Safe Number check didn\'t work :(');
+    });
+
+    it('should return 0 if type is not Number', () => {
+      let obj = null;
+      assert(t(obj).safeNumber === 0, 'Safe Number check didn\'t work :(');
+      obj = 'str';
+      assert(t(obj).safeNumber === 0, 'Safe Number check didn\'t work :(');
+      obj = {};
+      assert(t(obj).safeNumber === 0, 'Safe Number check didn\'t work :(');
+      obj = undefined;
+      assert(t(obj).safeNumber === 0, 'Safe Number check didn\'t work :(');
+      obj = [];
+      assert(t(obj).safeNumber === 0, 'Safe Number check didn\'t work :(');
+      assert(t(obj.badKey).safeNumber === 0, 'Safe Number check didn\'t work :(');
+    });
+  });
+
+  describe('Safe Boolean', () => {
+    it('should return the boolean if type is boolean', () => {
+      const bool = true;
+      assert(t(bool).safeBoolean === true, 'Safe Boolean check didn\'t work :(');
+    });
+
+    it('should return 0 if type is not Number', () => {
+      let obj = null;
+      assert(t(obj).safeBoolean === false, 'Safe Boolean check didn\'t work :(');
+      obj = 'str';
+      assert(t(obj).safeBoolean === false, 'Safe Boolean check didn\'t work :(');
+      obj = {};
+      assert(t(obj).safeBoolean === false, 'Safe Boolean check didn\'t work :(');
+      obj = undefined;
+      assert(t(obj).safeBoolean === false, 'Safe Boolean check didn\'t work :(');
+      obj = [];
+      assert(t(obj).safeBoolean === false, 'Safe Boolean check didn\'t work :(');
+      assert(t(obj.badKey).safeBoolean === false, 'Safe Boolean check didn\'t work :(');
+    });
+  });
+
+  describe('Safe Function', () => {
+    it('should return the function if type is function', () => {
+      const func = () => {};
+      assert(t(func).safeFunction === func, 'Safe Function check didn\'t work :(');
+    });
+
+    it('should return () => {} if type is not function', () => {
+      let obj = null;
+      assert(typeof t(obj).safeFunction === 'function', 'Safe Function check didn\'t work :(');
+      obj = 'str';
+      assert(typeof t(obj).safeFunction === 'function', 'Safe Function check didn\'t work :(');
+      obj = {};
+      assert(typeof t(obj).safeFunction === 'function', 'Safe Function check didn\'t work :(');
+      obj = undefined;
+      assert(typeof t(obj).safeFunction === 'function', 'Safe Function check didn\'t work :(');
+      obj = [];
+      assert(typeof t(obj).safeFunction === 'function', 'Safe Function check didn\'t work :(');
+      assert(typeof t(obj).safeFunction === 'function', 'Safe Function check didn\'t work :(');
     });
   });
 

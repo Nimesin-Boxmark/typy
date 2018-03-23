@@ -46,8 +46,6 @@ t([]).isArray // => true
 t([]).isObject // => false
 
 // obj.goodKey.nestedKey = 'helloworld'
-// to check if obj.goodKey.nestedKey is defined
-// but you don't know if obj.goodKey exists
 t(obj, 'goodKey.nestedKey').isDefined // => true
 t(obj, 'badKey.nestedKey').isDefined // => false
 // Typy won't throw undefined error for badKey.nestedKey
@@ -62,7 +60,7 @@ const deepObj = {
     superNestedKey: {}
   }
 };
-// Typy can safely return the value from a nested key in an object
+// safely return the value from a nested key in an object
 const myObj = t(deepObj, 'nestedKey.goodKey').safeObject; // => 'hello'
 // Typy won't throw undefined error for badKey.goodKey
 // instead the return value will be undefined
@@ -93,6 +91,9 @@ const myObj = t(deepObj, 'badKey.goodKey').safeObject; // => undefined
   - [isFunction](#isfunction)
   - [safeObject](#safeobject)
   - [safeString](#safestring)
+  - [safeNumber](#safenumber)
+  - [safeBoolean](#safeboolean)
+  - [safeFunction](#safefunction)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -367,7 +368,7 @@ const anotherDeepObj = {
   }]
 };
 // Typy can safely return the value even from a nested key in a nested array
-const myObj = t(deepObj, 'nestedArray[1].superNestedKey.superGoodKey').safeObject; // => 'typy is great :)'
+const myObj = t(anotherDeepObj, 'nestedArray[1].superNestedKey.superGoodKey').safeObject; // => 'typy is great :)'
 ```
 
 
@@ -376,10 +377,48 @@ const myObj = t(deepObj, 'nestedArray[1].superNestedKey.superGoodKey').safeObjec
 Returns the string value if the input type is string or will return an empty string `''`.
 
 ```js
-const myObj = t('typy is safe').safeString; // => 'typy is safe'
-const myObj = t(null).safeString; // => ''
-const myObj = t(undefined).safeString; // => ''
-const myObj = t(22).safeString; // => ''
+const str = t('typy is safe').safeString; // => 'typy is safe'
+const str = t(null).safeString; // => ''
+const str = t(undefined).safeString; // => ''
+const str = t(22).safeString; // => ''
+```
+
+
+#### safeNumber
+
+Returns the number if the input type is Number or will return `0`.
+
+```js
+const num = t(22).safeNumber; // => 22
+const num = t('22').safeNumber; // => 0
+const num = t(undefined).safeNumber; // => 0
+const num = t(null).safeNumber; // => 0
+```
+
+
+#### safeBoolean
+
+Returns the boolean if the input type is Boolean or will return `false`.
+
+```js
+const bool = t(true).safeBoolean; // => true
+const bool = t(false).safeBoolean; // => false
+const bool = t('22').safeBoolean; // => false
+const bool = t(undefined).safeBoolean; // => false
+const bool = t(22).safeBoolean; // => false
+```
+
+
+#### safeFunction
+
+Returns the function if the input type is function or will return an empty function `() => {}`.
+
+```js
+const helloFunc = () => { return 'Hello World!' }
+const func = t(helloFunc).safeFunction; // => helloFunc reference
+const func = t('I am a string').safeFunction; // => empty function () => {}
+const func = t(undefined).safeFunction; // => empty function () => {}
+const func = t(null).safeFunction; // => empty function () => {}
 ```
 
 
