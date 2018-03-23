@@ -47,3 +47,5 @@ package-lock.json
 
 others
 .DS_Store
+/fetchUpstream.bat
+/update.bat
